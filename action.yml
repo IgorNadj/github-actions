@@ -22,7 +22,7 @@ runs:
         ssh-keyscan -H "ec2-54-252-163-55.ap-southeast-2.compute.amazonaws.com" >> ~/.ssh/known_hosts
 
         # Execute the deployment commands on the remote server
-        ssh ubuntu@$ec2-54-252-163-55.ap-southeast-2.compute.amazonaws.com << 'EOF'
+        ssh ubuntu@ec2-54-252-163-55.ap-southeast-2.compute.amazonaws.com << 'EOF'
           cd /home/ubuntu/dev-webserver
           git pull
         
