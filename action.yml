@@ -1,0 +1,50 @@
+name: 'SSH Docker Compose Deploy'
+description: 'Connects to a server via SSH and runs git pull and docker compose up.'
+
+# Define the inputs the action will accept
+inputs:
+  host:
+    description: 'The hostname or IP address of the server'
+    required: true
+  username:
+    description: 'The username for the SSH connection'
+    required: true
+  ssh-private-key:
+    description: 'The private SSH key for authentication'
+    required: true
+  docker-username:
+    description: 'The username for Docker Hub'
+    required: true
+  docker-token:
+    description: 'The access token for Docker Hub'
+    required: true
+  remote-path:
+    description: 'The absolute path on the server where the repository is located'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Deploy to server
+      shell: bash
+      run: |
+        # Start the SSH agent and add the private key
+        eval "$(ssh-agent -s)"
+        echo "${{ inputs.ssh-private-key }}" | ssh-add - > /dev/null
+
+        # Create the SSH directory and add the server's host key to known_hosts
+        mkdir -p ~/.ssh
+        ssh-keyscan -H "${{ inputs.host }}" >> ~/.ssh/known_hosts
+
+        # Execute the deployment commands on the remote server
+        ssh ${{ inputs.username }}@${{ inputs.host }} << 'EOF'
+          cd ${{ inputs.remote-path }}
+          git pull origin main
+        
+          # Log in to Docker Hub using the secret token
+          echo "${{ inputs.docker-token }}" | docker login -u ${{ inputs.docker-username }} --password-stdin
+        
+          # Run docker-compose commands
+          docker compose pull
+          docker compose up -d --remove-orphans
+        EOF
