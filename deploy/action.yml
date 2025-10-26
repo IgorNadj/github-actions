@@ -23,6 +23,8 @@ runs:
 
         # Execute the deployment commands on the remote server
         ssh ubuntu@ec2-54-252-163-55.ap-southeast-2.compute.amazonaws.com << 'EOF'
+          set -e;
+        
           cd /home/ubuntu/dev-webserver
           git pull
         
@@ -30,6 +32,6 @@ runs:
           cat /home/ubuntu/.docker-hub-secret | docker login -u igornadj --password-stdin
         
           # Run docker-compose commands
-          docker compose pull
+          docker compose pull --quiet
           docker compose up -d --remove-orphans
         EOF
