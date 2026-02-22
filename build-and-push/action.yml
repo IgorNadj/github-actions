@@ -1,6 +1,28 @@
 name: 'Build and Push'
 description: 'Docker build and push'
 
+#  This action builds and pushes a Docker image tagged `latest` and only runs on the `main` branch.
+#
+#  Setup for underlying repo
+#
+#  1. Store DOCKERHUB_TOKEN in action secrets
+#  2. Add the following action:
+#
+#  ```yaml
+#  jobs:
+#    build:
+#      runs-on: ubuntu-24.04-arm
+#      steps:
+#        - name: Checkout code
+#          uses: actions/checkout@v4
+#
+#        - name: Build and Push
+#          uses: IgorNadj/github-actions/build-and-push@main
+#          with:
+#            dockerhub-token: ${{ secrets.DOCKERHUB_TOKEN }}
+#  ```
+
+
 # Define the inputs the action will accept
 inputs:
   dockerhub-token:
@@ -30,9 +52,6 @@ runs:
       with:
         username: igornadj
         password: ${{ inputs.dockerhub-token }}
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
