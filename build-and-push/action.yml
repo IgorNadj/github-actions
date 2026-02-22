@@ -53,6 +53,11 @@ runs:
         username: igornadj
         password: ${{ inputs.dockerhub-token }}
 
+    - name: Set up Docker Buildx (container driver for cache)
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver: docker-container
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
       with:
