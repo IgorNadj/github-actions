@@ -48,9 +48,6 @@ runs:
     - name: Deploy to server
       shell: bash
       run: |
-        # debug flags
-        set -xe
-        
         # Start the SSH agent and add the private key
         eval "$(ssh-agent -s)"
         echo "${{ inputs.ssh-private-key }}" | ssh-add - > /dev/null
