@@ -45,12 +45,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Deploy to server
+    - name: Ensure main branch
+      if: ${{ github.ref != 'refs/heads/main' }}
       shell: bash
       run: |
-        # debug flags
-        set -xe
-        
+        echo "This action only runs on main. Current ref: $GITHUB_REF"
+        exit 1
+
+    - name: Setup SSH
+      shell: bash
+      run: |
         # Start the SSH agent and add the private key
         eval "$(ssh-agent -s)"
         echo "${{ inputs.ssh-private-key }}" | ssh-add - > /dev/null
@@ -59,6 +63,14 @@ runs:
         mkdir -p ~/.ssh
         ssh-keyscan -H "ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com" >> ~/.ssh/known_hosts
 
+    - name: Test SSH
+      shell: bash
+      run: |
+        ssh ubuntu@ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com "date"
+
+    - name: Deploy to server
+      shell: bash
+      run: |
         # Execute the deployment commands on the remote server
         ssh ubuntu@ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com << 'EOF'
           set -e;
