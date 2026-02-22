@@ -1,6 +1,41 @@
 name: 'SSH Docker Compose Deploy'
 description: 'Connects to a server via SSH and runs git pull and docker compose up.'
 
+#  This action deploys to dev-webserver
+#
+#  Setup for underlying repo
+#
+#  1. Store DEV_SERVER_SSH_KEY in action secrets
+#  2. Add the following action:
+#
+#  ```yaml
+#  name: Deploy to Dev Server
+#
+#  on:
+#    workflow_run:
+#      workflows: ["build"]
+#      types:
+#        - completed
+#      branches:
+#        - main
+#
+#  jobs:
+#    deploy:
+#      runs-on: ubuntu-latest
+#      # This condition ensures the job only runs if the triggering workflow was successful
+#      if: github.event.workflow_run.conclusion == 'success'
+#      steps:
+#        - name: Checkout code
+#          uses: actions/checkout@v4
+#
+#        - name: Deploy
+#          uses: IgorNadj/github-actions/deploy@main
+#          with:
+#            ssh-private-key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+
+#  ```
+
+
 # Define the inputs the action will accept
 inputs:
   ssh-private-key:

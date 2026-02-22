@@ -9,6 +9,12 @@ description: 'Docker build and push'
 #  2. Add the following action:
 #
 #  ```yaml
+#  name: Build
+#
+#  on:
+#    push:
+#      branches: [ "main" ]
+#
 #  jobs:
 #    build:
 #      runs-on: ubuntu-24.04-arm
