@@ -64,18 +64,18 @@ runs:
       run: |
         # Create the SSH directory and add the server's host key to known_hosts
         mkdir -p ~/.ssh
-        ssh-keyscan -H "16.26.79.3" >> ~/.ssh/known_hosts
+        ssh-keyscan -H "ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com" >> ~/.ssh/known_hosts
 
     - name: Test SSH
       shell: bash
       run: |
-        ssh ubuntu@16.26.79.3 "date"
+        ssh ubuntu@ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com "date"
 
     - name: Deploy to server
       shell: bash
       run: |
         # Execute the deployment commands on the remote server
-        ssh ubuntu@16.26.79.3 << 'EOF'
+        ssh ubuntu@ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com << 'EOF'
           set -e;
         
           cd /home/ubuntu/dev-webserver
