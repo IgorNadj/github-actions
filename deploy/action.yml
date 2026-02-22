@@ -55,13 +55,10 @@ runs:
     - name: Setup SSH
       shell: bash
       run: |
-        # Start the SSH agent
+        # Start the SSH agent and add the private key
         eval "$(ssh-agent -s)"
         echo "${{ inputs.ssh-private-key }}" | ssh-add - > /dev/null
 
-    - name: Setup SSH pt2
-      shell: bash
-      run: |
         # Create the SSH directory and add the server's host key to known_hosts
         mkdir -p ~/.ssh
         ssh-keyscan -H "ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com" >> ~/.ssh/known_hosts
