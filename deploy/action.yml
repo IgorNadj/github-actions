@@ -19,10 +19,10 @@ runs:
 
         # Create the SSH directory and add the server's host key to known_hosts
         mkdir -p ~/.ssh
-        ssh-keyscan -H "ec2-54-252-163-55.ap-southeast-2.compute.amazonaws.com" >> ~/.ssh/known_hosts
+        ssh-keyscan -H "ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com" >> ~/.ssh/known_hosts
 
         # Execute the deployment commands on the remote server
-        ssh ubuntu@ec2-54-252-163-55.ap-southeast-2.compute.amazonaws.com << 'EOF'
+        ssh ubuntu@ec2-16-26-156-40.ap-southeast-4.compute.amazonaws.com << 'EOF'
           set -e;
         
           cd /home/ubuntu/dev-webserver
